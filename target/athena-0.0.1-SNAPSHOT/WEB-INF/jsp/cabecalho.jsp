@@ -88,8 +88,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 									<li><a href="gallery.html">Sistemas de Informação</a></li>
 									<li><a href="gallery.html">Marketing</a></li>
 									<li><a href="gallery.html">Lazer e Turismo</a></li>
+									<li><a href="cadastrar_ic.jsp">Cadastrar IC</a></li>
 								</ul></li>
-							<li><a href="#">Quero publicar!</a></li>
+							<li><a href="cadastrar_usuario.jsp">Cadastrar</a></li>
 							<li><a href="login.jsp">Login</a></li>
 						</ul>
 					</div>
