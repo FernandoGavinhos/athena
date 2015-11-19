@@ -7,17 +7,20 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
 
 @Entity
+@Table
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario {
-	@Id
+	private String e_mail;
+	@Id @JoinColumn
 	private int nUsp;
 	@Column(name = "papel", nullable = false, length = 10)
 	private String papel;
 	private String sexo;
 	private Date dt_nasc;
-	private String e_mail;
 	private String telefone;
 	private String celular;
 	private String curriculo_lattes;
@@ -25,11 +28,6 @@ public class Usuario {
 	private String senha;
 	private String nome;
 	
-	public Usuario(String login, String senha) {
-		super();
-		this.login = login;
-		this.senha = senha;
-	}
 	
 	public boolean Logout(Usuario user){
 		return true;

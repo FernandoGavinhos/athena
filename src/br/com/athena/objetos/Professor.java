@@ -2,13 +2,12 @@ package br.com.athena.objetos;
 
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 
 @Entity
+@Table
 @PrimaryKeyJoinColumn(name="nUsp")
 public class Professor extends Usuario{
-	public Professor(String login, String senha) {
-		super(login, senha);
-	}
 
 	private String curso_ministra;
 	private String linha_pesquisa;

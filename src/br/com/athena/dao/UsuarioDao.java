@@ -1,10 +1,10 @@
 package br.com.athena.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import br.com.athena.objetos.Aluno;
@@ -13,38 +13,72 @@ import br.com.athena.objetos.Usuario;
 
 public class UsuarioDao {
 
-	public List<Usuario> getLista() {
-		List<Usuario> lista = new ArrayList<>();
+	private EntityManagerFactory connection;
 
-		lista.add(new Usuario("juliane@usp.br", "123"));
-		lista.add(new Usuario("leonardo@usp.br", "123"));
-		lista.add(new Usuario("felipe@usp.br", "123"));
-		lista.add(new Usuario("fernando@usp.br", "123"));
-		return lista;
+	public UsuarioDao() {
+		ConnectionFactory connectionFactory = new ConnectionFactory();
+		try {
+			connection = connectionFactory.getConnection();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-private EntityManagerFactory connection;
-	
-	public UsuarioDao(){
-		connection = new ConnectionFactory().getConnection();
+
+	public Usuario cadastrarUsuario(Usuario user) throws Exception {
+		EntityManager manager = null;
+		manager = connection.createEntityManager();
+		try {
+			pesquisarUsuario(user);
+		} catch (NoResultException e) {
+			manager.getTransaction().begin();
+			manager.persist(user);
+			manager.getTransaction().commit();
+			return user;
+		} finally {
+			manager.close();
+		}
+		return null;
 	}
-	
-	public Usuario pesquisarUsuario(Usuario user){
-		return user;
-	}
-	
-	public Usuario Login(Aluno alu, Professor prof, Usuario user) throws Exception {
+
+	public Usuario pesquisarUsuario(Usuario user) throws NoResultException {
 		EntityManager manager = null;
 		try {
 			manager = connection.createEntityManager();
-			Query query = manager.createQuery("select u from Usuario as u "+"where u.nUsp = :nUsp and u.senha= :senha");
+			Query query = manager.createQuery("select u from Usuario u where u.nUsp = :nUsp");
+			query.setParameter("nUsp", user.getnUsp());
+			user = (Usuario) query.getSingleResult();
+			return user;
+		} finally {
+			manager.close();
+		}
+	}
+	
+	public List<Usuario> pesquisarTodos() throws NoResultException {
+		EntityManager manager = null;
+		try {
+			manager = connection.createEntityManager();
+			Query query = manager.createQuery("select u from Usuario u");
+			return query.getResultList();
+			
+		} finally {
+			manager.close();
+		}
+	}
+
+	public Usuario login(Usuario user) throws NoResultException {
+		EntityManager manager = null;
+		try {
+			manager = connection.createEntityManager();
+			Query query = manager.createQuery("select u from Usuario u where u.nUsp = :nUsp and u.senha = :senha");
 			query.setParameter("nUsp", user.getnUsp());
 			query.setParameter("senha", user.getSenha());
 			user = (Usuario) query.getSingleResult();
-			if(user.getPapel().equals("Aluno")){
+			if (user.getPapel().equals("Aluno")) {
+				Aluno alu= new Aluno();
 				alu = manager.find(Aluno.class, user.getnUsp());
 				return alu;
-			}
-			else{
+			} else {
+				Professor prof = new Professor();
 				prof = manager.find(Professor.class, user.getnUsp());
 				return prof;
 			}
@@ -52,4 +86,5 @@ private EntityManagerFactory connection;
 			manager.close();
 		}
 	}
+
 }

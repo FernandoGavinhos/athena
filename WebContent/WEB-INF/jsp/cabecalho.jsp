@@ -21,7 +21,31 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -79,19 +103,34 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav navbar-right">
 							<li><a href="index.jsp">Home</a></li>
-							<li><a class="scroll" href="#">Como funciona?</a></li>
-							<li><a href="#" class="dropdown-toggle"
-								data-toggle="dropdown" role="button" aria-haspopup="true"
-								aria-expanded="false">Iniciações Científicas<span
-									class="caret"></span></a>
-								<ul class="dropdown-menu">
-									<li><a href="gallery.html">Sistemas de Informação</a></li>
-									<li><a href="gallery.html">Marketing</a></li>
-									<li><a href="gallery.html">Lazer e Turismo</a></li>
-									<li><a href="cadastrar_ic.jsp">Cadastrar IC</a></li>
-								</ul></li>
-							<li><a href="cadastrar_usuario.jsp">Cadastrar</a></li>
+							<%
+								//TODO: popular a tela com a lista de ICs
+							%>
+							<li><a href="buscaIC.jsp">Iniciações Científicas</a></li>
+							<%
+								String papel = (String) session.getAttribute("papel");
+								Boolean ehAluno = (Boolean) session.getAttribute("ehAluno");
+
+								if (papel != null && !ehAluno) {
+							%>
+							<li><a href="cadastroIC.jsp">Cadastrar IC</a></li>
+							<%
+								} else if(papel!=null){
+							%>
+							<li><a href="listaICAluno.jsp">ICs Inscritas</a></li>
+							<%}
+								String login = (String) session.getAttribute("login");
+								if (login == null) {
+							%>
+							<li><a href="cadastroUsuario.jsp">Cadastro</a></li>
 							<li><a href="login.jsp">Login</a></li>
+							<%
+								} else {
+							%>
+							<li><a href="logout.jsp">Logout</a></li>
+							<%
+								}
+							%>
 						</ul>
 					</div>
 					<!-- /.navbar-collapse -->

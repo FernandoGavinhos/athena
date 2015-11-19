@@ -52,12 +52,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="coment-form">
 				<h3 class="prjt">Login</h3>
 				<form action="mvc?do=LoginController" method="POST">
-					<p>Usuário:</p>
-					<input type="text" name="usuario" required="true">
+					<p>Número USP:</p>
+					<input type="text" name="nUSP" required="true">
 					<p>Senha:</p>
 					<input type="password" name="senha" required="true"> <br>
 					<br>
-					<p>${erro}</p>
+					<h4>${erro}</h4>
 					<input type="submit" value="Entrar">
 
 				</form>

@@ -7,7 +7,7 @@
 	<c:import url="/WEB-INF/jsp/cabecalho.jsp" />
 	<div class="container">
 		<div class="our_blog">
-			<h3>Seja bem vindo ${login}!</h3>
+			<h3>Seja bem vindo ${papel} ${login}!</h3>
 			<h4>Projetos Recentes</h4>
 			 <br>
 			<br>

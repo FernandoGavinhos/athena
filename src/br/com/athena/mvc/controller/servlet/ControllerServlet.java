@@ -18,15 +18,17 @@ public class ControllerServlet extends HttpServlet {
 		String nomeDaClasse = "br.com.athena.mvc.controller." + parametro;
 
 		try {
-
-			Class classe = Class.forName(nomeDaClasse);
-			ServletImpl servletImpl = (ServletImpl) classe.newInstance();
-			String pagina = servletImpl.executa(request, response);
-			request.getRequestDispatcher(pagina).forward(request, response);
-
+			String pagina;
+			try {
+				Class classe = Class.forName(nomeDaClasse);
+				ServletImpl servletImpl = (ServletImpl) classe.newInstance();
+				pagina = servletImpl.executa(request, response);
+				request.getRequestDispatcher(pagina).forward(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}		
 		} catch (Exception e) {
-			throw new ServletException(
-					"A lógica de negócios causou uma exceção", e);
+			throw new ServletException("A lógica de negócios causou uma exceção", e);
 		}
 	}
 }

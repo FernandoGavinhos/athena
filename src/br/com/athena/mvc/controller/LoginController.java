@@ -1,7 +1,6 @@
 package br.com.athena.mvc.controller;
 
-import java.util.List;
-
+import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,30 +10,33 @@ import br.com.athena.objetos.Usuario;
 
 public class LoginController implements ServletImpl {
 
-	public String executa(HttpServletRequest req, HttpServletResponse res)
-			throws Exception {
+	public String executa(HttpServletRequest req, HttpServletResponse res) {
+		try {
+			Usuario user = new Usuario();
+			String nUSParameter = req.getParameter("nUSP");
+			String senhaParameter = req.getParameter("senha");
 
-		String login = req.getParameter("usuario");
-		String senha = req.getParameter("senha");
+			user.setnUsp(Integer.parseInt(nUSParameter));
+			user.setSenha(senhaParameter);
 
-		// Monta a lista de contatos
-		List<Usuario> usuarios = new UsuarioDao().getLista();
-		Usuario usuarioLogado = null;
+			UsuarioDao userDao = new UsuarioDao();
+			user = userDao.login(user);
+			
+			// if (nUSParameter.equals("8061535")) {
+			// user.setPapel("Aluno");
+			// user.setNome("Juliane");
+			// } else {
+			// user.setPapel("Professor");
+			// user.setNome("Chaim");
+			// }
+			req.getSession().setAttribute("login", user.getNome());
+			req.getSession().setAttribute("papel", user.getPapel());
+			req.getSession().setAttribute("ehAluno", user.getPapel().equals("Aluno"));
 
-		for (Usuario usuario : usuarios) {
-			if (login.equals(usuario.getLogin())
-					&& senha.equals(usuario.getSenha())) {
-				usuarioLogado = usuario;
-			}
-		}
-
-		if (usuarioLogado != null) {
-			req.setAttribute("login", usuarioLogado.getLogin());
 			return "/WEB-INF/jsp/bem-vindo.jsp";
-		} else {
+		} catch (NoResultException e) {
 			req.setAttribute("erro", "Usuário ou senha inválidos... =/");
 			return "login.jsp";
 		}
-
 	}
 }
